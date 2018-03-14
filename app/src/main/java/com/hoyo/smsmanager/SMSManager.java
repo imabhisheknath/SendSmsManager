@@ -90,7 +90,7 @@ public class SMSManager {
                     }
 
                     if(mSmsHandler!=null) {
-                        mSmsHandler.handle(number,message,new SMSRetryPolicy(retryCount,retryTime));
+                        mSmsHandler.handle(number,message,smsRetryPolicy);
                     }
 
                     return;
@@ -182,7 +182,7 @@ public class SMSManager {
         if(retryPolicy==null){
             retryPolicy = SMSRetryPolicy.getDefaultRetryPolicy();
         } else {
-            debugLOG("Remaining Retry Attempts : "+retryPolicy.getRetryCount());
+            debugLOG("Main Remaining Retry Attempts : "+retryPolicy.getRetryCount());
         }
 
 
@@ -212,6 +212,8 @@ public class SMSManager {
     private void handleSentError(int errorCode, String number, String message, SMSRetryPolicy smsRetryPolicy){
 
         boolean isRetry = (smsRetryPolicy.getRetryCount()>0);
+
+        debugLOG("Is Retry "+isRetry);
 
         switch (errorCode) {
             case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
