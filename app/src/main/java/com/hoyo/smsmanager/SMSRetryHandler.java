@@ -81,9 +81,9 @@ public abstract class SMSRetryHandler {
             msg.setData(bundle);
             debugLOG("Remaining Retry After Latest Retry attempt: "+retryCount);
             // If retryCount is Not Zero Try Again
-            if(retryCount>0) {
+            /*if(retryCount>0) {
                 sendMessageDelayed(msg, retryTime);
-            }
+            }*/
         }
     };
 
