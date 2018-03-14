@@ -54,7 +54,7 @@ public class SMSManager {
     private SMSErrorListener mSmsErrorListener;
 
     private BroadcastReceiver msgStatusReceiver;
-    private SMSHandler mSmsHandler;
+    private SMSRetryHandler mSmsHandler;
 
     /**
      *
@@ -148,7 +148,7 @@ public class SMSManager {
     }
 
     private void initSMSHandler(){
-        mSmsHandler = new SMSHandler() {
+        mSmsHandler = new SMSRetryHandler() {
             @Override
             public void onRetry(String mobileNumber, String message, SMSRetryPolicy smsRetryPolicy) {
                 sendMessage(mobileNumber,message,smsRetryPolicy);
@@ -284,7 +284,7 @@ public class SMSManager {
                     mSmsErrorListener.OnSMSDeliverFailed(number,"Unknown Internal Error while SMS Delivery - "+errorCode, E_DELIVERY_STATUS_UNKNOWN,isRetry);
                 }
         }
-        // ToDo; Decide whether the sms retry has to be handled
+        // ToDo; Decide whether the sms retry has to be handled for delivery
         // Delivery Failed Retry Policy Need to considered
 
         if (mSmsHandler != null) {

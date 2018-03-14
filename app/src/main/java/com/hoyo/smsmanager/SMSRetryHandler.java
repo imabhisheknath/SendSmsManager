@@ -9,7 +9,7 @@ import android.os.Message;
  * Created by Praba on 3/14/2018.
  */
 
-public abstract class SMSHandler {
+public abstract class SMSRetryHandler {
 
     private static String MOBILE_NUMBER = "mobile_number";
     private static String MESSAGE = "message";
@@ -18,11 +18,11 @@ public abstract class SMSHandler {
 
     public abstract void onRetry(String mobileNumber, String message, SMSRetryPolicy smsRetryPolicy);
 
-    public SMSHandler(){
+    public SMSRetryHandler(){
 
     }
 
-    public SMSHandler handle(String mMobileNumber, String mMessage, SMSRetryPolicy mSmsRetryPolicy){
+    public SMSRetryHandler handle(String mMobileNumber, String mMessage, SMSRetryPolicy mSmsRetryPolicy){
 
         if(mMobileNumber!= null && mMobileNumber.length()>0
                 && mMessage!= null && mMessage.length()>0
