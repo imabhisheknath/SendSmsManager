@@ -344,6 +344,11 @@ public class SMSManager {
     public SMSManager setDebugEnabled(boolean status){
         debugLOG("Enable Debug: "+status);
         this.isDebug = status;
+
+        if(mSmsHandler!=null){
+            mSmsHandler.setDebugEnabled(status);
+        }
+
         return this;
     }
 
