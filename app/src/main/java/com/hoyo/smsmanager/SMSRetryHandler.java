@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * Created by Praba on 3/14/2018.
@@ -11,10 +12,14 @@ import android.os.Message;
 
 public abstract class SMSRetryHandler {
 
+    private static String LOG_TITLE = SMSRetryHandler.class.getSimpleName();
+
     private static String MOBILE_NUMBER = "mobile_number";
     private static String MESSAGE = "message";
     private static String RETRY_POLICY_COUNT = "retry_policy_count";
     private static String RETRY_POLICY_TIME = "retry_policy_time";
+
+    private boolean isDebug;
 
     public abstract void onRetry(String mobileNumber, String message, SMSRetryPolicy smsRetryPolicy);
 
@@ -22,11 +27,23 @@ public abstract class SMSRetryHandler {
 
     }
 
+    public SMSRetryHandler(boolean isDebugStatus){
+        this.isDebug = isDebugStatus;
+    }
+
+    public void setDebugEnabled(boolean status){
+        this.isDebug = status;
+    }
+
     public SMSRetryHandler handle(String mMobileNumber, String mMessage, SMSRetryPolicy mSmsRetryPolicy){
+
+
 
         if(mMobileNumber!= null && mMobileNumber.length()>0
                 && mMessage!= null && mMessage.length()>0
                 && mSmsRetryPolicy!=null) {
+
+            debugLOG("Remaining Retry Attempts : "+mSmsRetryPolicy.getRetryCount());
 
             if(mSmsRetryPolicy.getRetryCount()>0){
                 Message msg = smsHandler.obtainMessage();
@@ -54,13 +71,15 @@ public abstract class SMSRetryHandler {
             int retryTime = bundle.getInt(RETRY_POLICY_TIME,SMSRetryPolicy.DEFAULT_RETRY_TIME);
 
             // call the Retry method
+            debugLOG("Retrying ..... : "+retryCount);
 
             onRetry(mobileNumber,message,new SMSRetryPolicy(retryCount,retryTime));
 
+            --retryCount;
             // Update Retry Count
-            bundle.putInt(RETRY_POLICY_COUNT,--retryCount);
+            bundle.putInt(RETRY_POLICY_COUNT,retryCount);
             msg.setData(bundle);
-
+            debugLOG("Remaining Retry : "+retryCount);
             // If retryCount is Not Zero Try Again
             if(retryCount>0) {
                 sendMessageDelayed(msg, retryTime);
@@ -71,6 +90,16 @@ public abstract class SMSRetryHandler {
     public void remove(){
         if(smsHandler!=null){
             smsHandler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    /**
+     *
+     * @param message : debug message
+     */
+    private void debugLOG(String message){
+        if(isDebug){
+            Log.e(LOG_TITLE,""+message);
         }
     }
 

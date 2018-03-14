@@ -181,6 +181,8 @@ public class SMSManager {
 
         if(retryPolicy==null){
             retryPolicy = SMSRetryPolicy.getDefaultRetryPolicy();
+        } else {
+            debugLOG("Remaining Retry Attempts : "+retryPolicy.getRetryCount());
         }
 
 
