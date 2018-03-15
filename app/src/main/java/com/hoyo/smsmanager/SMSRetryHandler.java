@@ -37,8 +37,6 @@ public abstract class SMSRetryHandler {
 
     public SMSRetryHandler handle(String mMobileNumber, String mMessage, SMSRetryPolicy mSmsRetryPolicy){
 
-
-
         if(mMobileNumber!= null && mMobileNumber.length()>0
                 && mMessage!= null && mMessage.length()>0
                 && mSmsRetryPolicy!=null) {
@@ -72,14 +70,15 @@ public abstract class SMSRetryHandler {
 
             // call the Retry method
             debugLOG("Retrying ..... : "+retryCount);
-
-            onRetry(mobileNumber,message,new SMSRetryPolicy(retryCount,retryTime));
-
             --retryCount;
             // Update Retry Count
             bundle.putInt(RETRY_POLICY_COUNT,retryCount);
             msg.setData(bundle);
-            debugLOG("Remaining Retry After Latest Retry attempt: "+retryCount);
+
+            onRetry(mobileNumber,message,new SMSRetryPolicy(retryCount,retryTime));
+
+            debugLOG("Remaining Retry After Latest Retry attempt from bundle : "+bundle.getInt(RETRY_POLICY_COUNT,SMSRetryPolicy.DEFAULT_RETRY_COUNT));
+            //debugLOG("Remaining Retry After Latest Retry attempt: "+retryCount);
             // If retryCount is Not Zero Try Again
             /*if(retryCount>0) {
                 sendMessageDelayed(msg, retryTime);
