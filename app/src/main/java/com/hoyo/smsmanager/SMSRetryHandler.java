@@ -78,12 +78,7 @@ public abstract class SMSRetryHandler {
             onRetry(mobileNumber,message,new SMSRetryPolicy(retryCount,retryTime));
 
             debugLOG("Remaining Retry After Latest Retry attempt from bundle : "+bundle.getInt(RETRY_POLICY_COUNT,SMSRetryPolicy.DEFAULT_RETRY_COUNT));
-            //debugLOG("Remaining Retry After Latest Retry attempt: "+retryCount);
-            // If retryCount is Not Zero Try Again
-            /*if(retryCount>0) {
-                sendMessageDelayed(msg, retryTime);
-            }*/
-        }
+          }
     };
 
     public void remove(){
