@@ -16,6 +16,8 @@ import static android.app.PendingIntent.FLAG_ONE_SHOT;
     1. Add the Error Messages To Strings.
     2. Add The Messages in different languages.
     3. Check for Grammatical Errors.
+    4. Do the Retry operations only on reasonable errors like : No signal\
+    5. Add SIM Card check and signal check in the library
  */
 
 public class SMSManager {
